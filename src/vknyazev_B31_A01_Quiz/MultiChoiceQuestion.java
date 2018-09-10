@@ -8,5 +8,5 @@ package vknyazev_B31_A01_Quiz;
  *
  */
 public class MultiChoiceQuestion extends SingleChoiceQuestion {
-
+    
 }
