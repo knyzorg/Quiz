@@ -19,15 +19,14 @@ public class QuestionFactory {
             q = makeFillInQuestion(st);
             break;
         case 'N':
-            
+            q = makeNumericQuestion(st);
             break;
         case 'S':
-
+            q = makeSingleChoiceQuestion(st);
             break;
         case 'M':
-
+            q = makeMultiChoiceQuestion(st);
             break;
-
         default:
             throw new InvalidQuestionDataException(questionType + " is not a valid question type.");
         }
@@ -35,9 +34,25 @@ public class QuestionFactory {
         return q;
     }
 
-    private static SingleChoiceQuestion makeSingleChoiceQuestion(StringTokenizer st) {
+    private static NumericQuestion makeNumericQuestion(StringTokenizer st) {
+        NumericQuestion q = null;
         
+        return q;
     }
+
+    private static SingleChoiceQuestion makeSingleChoiceQuestion(StringTokenizer st) {
+        SingleChoiceQuestion q = null;
+        
+        return q;
+    }
+
+    private static MultiChoiceQuestion makeMultiChoiceQuestion(StringTokenizer st) {
+        String question = st.nextToken();
+        
+        
+        return new MultiChoiceQuestion();
+    }
+
     private static FillInQuestion makeFillInQuestion(StringTokenizer st) {
         String rawQuestionText = st.nextToken();
         int answerStart = rawQuestionText.indexOf('*');
