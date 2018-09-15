@@ -6,23 +6,14 @@
     "configurations": [
         {
             "type": "java",
-            "name": "Debug (Launch)",
+            "name": "Debug (Launch)-QuizRunner<vknyazev_B31_A01_Quiz>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
+            "console": "integratedTerminal",
             "stopOnEntry": false,
-            "mainClass": "${workspaceFolder}/QuizRunner",
-            "args": ""
-        },
-        {
-            "type": "java",
-            "name": "Debug (Launch)",
-            "request": "launch",
-            "cwd": "${workspaceFolder}",
-            "console": "internalConsole",
-            "stopOnEntry": false,
-            "mainClass": "",
-            "args": ""
+            "mainClass": "vknyazev_B31_A01_Quiz.QuizRunner",
+            "args": "",
+            "projectName": "vknyazev_B31_A01_Quiz"
         }
     ]
 }

@@ -3,16 +3,19 @@
  */
 package vknyazev_B31_A01_Quiz;
 
-import java.util.StringTokenizer;
-
+import java.util.Scanner;
 /**
  * @author slava
  *
  */
 public class QuestionFactory {
     public static Question getQuestion(String questionData) {
-        StringTokenizer st = new StringTokenizer(questionData, ", ");
-        char questionType = st.nextToken().charAt(0);
+        // Must use Scanner instead of StringTokenizer as multiple characters in sequence are used
+        Scanner st = new Scanner(questionData);
+        st.useDelimiter(", ");
+
+        // Identify question type
+        char questionType = st.next().charAt(0);
         Question q = null;
         switch (questionType) {
         case 'F':
@@ -28,33 +31,40 @@ public class QuestionFactory {
             q = makeMultiChoiceQuestion(st);
             break;
         default:
+            st.close();
             throw new InvalidQuestionDataException(questionType + " is not a valid question type.");
         }
-
         return q;
     }
 
-    private static NumericQuestion makeNumericQuestion(StringTokenizer st) {
-        NumericQuestion q = null;
-        
-        return q;
+    private static NumericQuestion makeNumericQuestion(Scanner st) {
+        String question = st.next();
+        double answer = st.nextDouble();
+        return new NumericQuestion(question, answer);
     }
 
-    private static SingleChoiceQuestion makeSingleChoiceQuestion(StringTokenizer st) {
-        SingleChoiceQuestion q = null;
-        
-        return q;
+    private static SingleChoiceQuestion makeSingleChoiceQuestion(Scanner st) {
+        return makeChoiceQuestion(st, false);
     }
 
-    private static MultiChoiceQuestion makeMultiChoiceQuestion(StringTokenizer st) {
-        String question = st.nextToken();
-        
-        
-        return new MultiChoiceQuestion();
+    private static MultiChoiceQuestion makeMultiChoiceQuestion(Scanner st) {
+        // Can safely cast
+        return (MultiChoiceQuestion) makeChoiceQuestion(st, true);
     }
 
-    private static FillInQuestion makeFillInQuestion(StringTokenizer st) {
-        String rawQuestionText = st.nextToken();
+    private static SingleChoiceQuestion makeChoiceQuestion(Scanner st, boolean multiple) {
+        String question = st.next();
+        int optionCount = st.nextInt();
+        QuestionOption options[] = new QuestionOption[optionCount];
+
+        for (int i = 0; i < optionCount; i++)
+            options[i] = new QuestionOption(st.next(), st.next().equals("correct"));
+
+        return multiple ? new MultiChoiceQuestion(question, options) : new SingleChoiceQuestion(question, options);
+    }
+
+    private static FillInQuestion makeFillInQuestion(Scanner st) {
+        String rawQuestionText = st.next();
         int answerStart = rawQuestionText.indexOf('*');
         int answerEnd = rawQuestionText.lastIndexOf('*');
 
@@ -64,7 +74,7 @@ public class QuestionFactory {
             throw new InvalidQuestionDataException(
                     "A Fill-In-The-Blanks Question must contain an answer surrounded by *");
 
-        String answer = rawQuestionText.substring(answerStart + 1, answerEnd - 1);
+        String answer = rawQuestionText.substring(answerStart + 1, answerEnd);
         String question = rawQuestionText.replace("*" + answer + "*", "__________");
 
         return new FillInQuestion(question, answer);
