@@ -4,9 +4,9 @@
 package vknyazev_B31_A01_Quiz;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Scanner;
-import java.util.ArrayList;;
+import java.util.*;
 
 /**
  * @author slava
@@ -15,7 +15,7 @@ import java.util.ArrayList;;
 public class QuizRunner {
 
 	ArrayList<Question> questions = new ArrayList<Question>();
-	ArrayList<String> answers = new ArrayList<String>();
+	int correctCount = 0;
 	String username;
 
 	/**
@@ -29,12 +29,17 @@ public class QuizRunner {
 		try {
 			Scanner reader = new Scanner(questionsFile);
 			while (reader.hasNext()) {
-				Question q = QuestionFactory.getQuestion(reader.nextLine());
-				questions.add(q);
+				try {
+					Question q = QuestionFactory.getQuestion(reader.nextLine());
+					questions.add(q);
+				} catch (InvalidQuestionDataException e) {
+					System.err.println("Corrupt question. Skipping.");
+				}
 			}
 			reader.close();
 		} catch (IOException e) {
 			System.err.println("Error reading file: " + e.getMessage());
+			System.exit(1);
 		}
 		begin();
 		end();
@@ -52,6 +57,7 @@ public class QuizRunner {
 			String answer = kb.nextLine();
 			if (question.checkAnswer(answer)) {
 				System.out.println("Correct");
+				this.correctCount++;
 			} else {
 				System.out.println("Incorrect");
 			}
@@ -60,7 +66,16 @@ public class QuizRunner {
 	}
 
 	private void end() {
-
+		System.out.println(username + ", you score was " + correctCount + " out of " + questions.size() + ", or " +  Math.floor((double) correctCount/questions.size()*100) + "%");
+		System.out.println("Goodbye.");
+		try {
+			FileWriter fw = new FileWriter(new File("quizScores.txt"), true);
+			fw.write(String.format("%-30s%3d%%\n", username, Math.floor((double) correctCount/questions.size()*100)));
+			fw.close();
+		} catch (IOException e) {
+			System.err.println("Failed to write to file: " + e);
+		}
+		
 	}
 
 

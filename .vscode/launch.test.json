@@ -1,0 +1,30 @@
+{
+    "run": {
+        "default": "",
+        "items": [
+            {
+                "name": "vknyazev_B31_A01_Quiz",
+                "projectName": "vknyazev_B31_A01_Quiz",
+                "workingDirectory": "/home/slava/Documents/Eclipse/vknyazev_B31_A01_Quiz",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    },
+    "debug": {
+        "default": "",
+        "items": [
+            {
+                "name": "vknyazev_B31_A01_Quiz",
+                "projectName": "vknyazev_B31_A01_Quiz",
+                "workingDirectory": "/home/slava/Documents/Eclipse/vknyazev_B31_A01_Quiz",
+                "args": [],
+                "vmargs": [],
+                "env": {},
+                "preLaunchTask": ""
+            }
+        ]
+    }
+}

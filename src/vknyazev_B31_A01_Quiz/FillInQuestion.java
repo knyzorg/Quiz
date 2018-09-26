@@ -32,10 +32,6 @@ public class FillInQuestion extends Question {
         this.answer = answer;
     }
 
-    public String getPrompt() {
-        return question;
-    }
-
     public boolean checkAnswer(String input) {
         return input.equalsIgnoreCase(this.answer);
     }

@@ -2,19 +2,19 @@
  * 
  */
 package vknyazev_B31_A01_Quiz;
-
+import java.util.ArrayList;
 /**
  * @author slava
  *
  */
 public class SingleChoiceQuestion extends Question {
-    private QuestionOption options[];
+    private ArrayList<QuestionOption> options = new ArrayList<QuestionOption>();
 
     public SingleChoiceQuestion() {
 
     }
 
-    public SingleChoiceQuestion(String question, QuestionOption options[]) {
+    public SingleChoiceQuestion(String question, ArrayList<QuestionOption> options) {
         super(question);
         this.options = options;
     }
@@ -28,14 +28,14 @@ public class SingleChoiceQuestion extends Question {
             return false;
         }
         
-        if (n > options.length || n < 0)
+        if (n > options.size()-1 || n < 0)
             return false;
 
-        return options[n].getIsCorrect();
+        return options.get(n).getIsCorrect();
     }
     
     public String getPrompt() {
-        String prompt = this.question;
+        String prompt = super.getPrompt();
         int n = 0;
         for (QuestionOption option: this.options)
             prompt += "\n" +  (++n) + ". " + option.getText();
@@ -46,14 +46,14 @@ public class SingleChoiceQuestion extends Question {
     /**
      * @return the options
      */
-    public QuestionOption[] getOptions() {
+    public ArrayList<QuestionOption> getOptions() {
         return options;
     }
 
     /**
      * @param options the options to set
      */
-    public void setOptions(QuestionOption[] options) {
+    public void setOptions(ArrayList<QuestionOption> options) {
         this.options = options;
     }
 }

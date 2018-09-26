@@ -10,7 +10,10 @@ package vknyazev_B31_A01_Quiz;
 public abstract class Question {
     public String question;
     public abstract boolean checkAnswer(String input);
-    public abstract String getPrompt();
+    
+    public String getPrompt() {
+        return question;
+    }
 
     public Question() {
 

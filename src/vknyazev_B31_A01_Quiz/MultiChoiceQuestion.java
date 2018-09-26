@@ -15,7 +15,7 @@ public class MultiChoiceQuestion extends SingleChoiceQuestion {
         
     }
 
-    public MultiChoiceQuestion(String question, QuestionOption options[]) {
+    public MultiChoiceQuestion(String question, ArrayList<QuestionOption> options) {
         super(question, options);
     }
 

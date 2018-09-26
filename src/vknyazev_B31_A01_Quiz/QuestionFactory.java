@@ -3,19 +3,21 @@
  */
 package vknyazev_B31_A01_Quiz;
 
-import java.util.Scanner;
+import java.util.*;
+
 /**
  * @author slava
  *
  */
 public class QuestionFactory {
     public static Question getQuestion(String questionData) {
-        // Must use Scanner instead of StringTokenizer as multiple characters in sequence are used
+        // Must use Scanner instead of StringTokenizer as multiple characters in
+        // sequence are used
         Scanner st = new Scanner(questionData);
         st.useDelimiter(", ");
-
+    
         // Identify question type
-        char questionType = st.next().charAt(0);
+        char questionType = st.next().toUpperCase().charAt(0);
         Question q = null;
         switch (questionType) {
         case 'F':
@@ -38,9 +40,14 @@ public class QuestionFactory {
     }
 
     private static NumericQuestion makeNumericQuestion(Scanner st) {
-        String question = st.next();
-        double answer = st.nextDouble();
-        return new NumericQuestion(question, answer);
+        try {
+
+            String question = st.next();
+            double answer = st.nextDouble();
+            return new NumericQuestion(question, answer);
+        } catch (NoSuchElementException e) {
+            throw new InvalidQuestionDataException();
+        }
     }
 
     private static SingleChoiceQuestion makeSingleChoiceQuestion(Scanner st) {
@@ -53,30 +60,44 @@ public class QuestionFactory {
     }
 
     private static SingleChoiceQuestion makeChoiceQuestion(Scanner st, boolean multiple) {
-        String question = st.next();
-        int optionCount = st.nextInt();
-        QuestionOption options[] = new QuestionOption[optionCount];
 
-        for (int i = 0; i < optionCount; i++)
-            options[i] = new QuestionOption(st.next(), st.next().equals("correct"));
+        try {
 
-        return multiple ? new MultiChoiceQuestion(question, options) : new SingleChoiceQuestion(question, options);
+            String question = st.next();
+            int optionCount = st.nextInt();
+            ArrayList<QuestionOption> options = new ArrayList<QuestionOption>();
+
+            for (int i = 0; i < optionCount; i++)
+                options.add(new QuestionOption(st.next(), st.next().equals("correct")));
+
+            return multiple ? new MultiChoiceQuestion(question, options) : new SingleChoiceQuestion(question, options);
+
+        } catch (NoSuchElementException e) {
+            throw new InvalidQuestionDataException();
+        }
     }
 
     private static FillInQuestion makeFillInQuestion(Scanner st) {
-        String rawQuestionText = st.next();
-        int answerStart = rawQuestionText.indexOf('*');
-        int answerEnd = rawQuestionText.lastIndexOf('*');
+        try {
 
-        // < 0 means there are no *, == means that there is only one, +1 == means that
-        // the answer is empty
-        if (answerStart < 0 || answerStart == answerEnd || answerStart + 1 == answerEnd)
-            throw new InvalidQuestionDataException(
-                    "A Fill-In-The-Blanks Question must contain an answer surrounded by *");
+            String rawQuestionText = st.next();
+            int answerStart = rawQuestionText.indexOf('*');
+            int answerEnd = rawQuestionText.lastIndexOf('*');
 
-        String answer = rawQuestionText.substring(answerStart + 1, answerEnd);
-        String question = rawQuestionText.replace("*" + answer + "*", "__________");
+            // < 0 means there are no *, == means that there is only one, +1 == means that
+            // the answer is empty
+            if (answerStart < 0 || answerStart == answerEnd || answerStart + 1 == answerEnd)
+                throw new InvalidQuestionDataException(
+                        "A Fill-In-The-Blanks Question must contain an answer surrounded by *");
 
-        return new FillInQuestion(question, answer);
+            String answer = rawQuestionText.substring(answerStart + 1, answerEnd);
+            String question = rawQuestionText.replace("*" + answer + "*", "__________");
+
+            return new FillInQuestion(question, answer);
+
+        } catch (NoSuchElementException e) {
+            throw new InvalidQuestionDataException();
+        }
+
     }
 }
